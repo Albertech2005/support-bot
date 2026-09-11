@@ -1,0 +1,18 @@
+{
+  "user_to_topic": {
+    "7936780165": 7,
+    "5341886010": 30
+  },
+  "topic_to_user": {
+    "7": 7936780165,
+    "30": 5341886010
+  },
+  "topic_to_userinfo": {
+    "30": {
+      "full_name": "Albert",
+      "username": "Alber_tech",
+      "user_id": 5341886010
+    }
+  },
+  "banned_users": []
+}
