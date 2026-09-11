@@ -1,0 +1,5 @@
+# Never commit live ticket data
+tickets.json
+__pycache__/
+*.pyc
+.env

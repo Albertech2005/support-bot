@@ -126,12 +126,22 @@ async def handle_user_message(update: Update, context: ContextTypes.DEFAULT_TYPE
 
     topic_id = data["user_to_topic"][uid]
 
-    await context.bot.copy_message(
-        chat_id=STAFF_GROUP_ID,
-        from_chat_id=msg.chat_id,
-        message_id=msg.message_id,
-        message_thread_id=topic_id,
-    )
+    try:
+        await context.bot.copy_message(
+            chat_id=STAFF_GROUP_ID,
+            from_chat_id=msg.chat_id,
+            message_id=msg.message_id,
+            message_thread_id=topic_id,
+        )
+    except Exception as e:
+        # Topic no longer exists (e.g. stale data after redeploy) — create a new one
+        logger.warning(f"Topic {topic_id} not found, creating a new one. Error: {e}")
+        data["user_to_topic"].pop(uid, None)
+        data["topic_to_user"].pop(str(topic_id), None)
+        data["topic_to_userinfo"].pop(str(topic_id), None)
+        save_data(data)
+        # Recurse once to create fresh topic and forward the message
+        await handle_user_message(update, context)
 
 
 # ── Staff commands ────────────────────────────────────────────────────────────
